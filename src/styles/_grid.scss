@@ -1,0 +1,19 @@
+
+#root {
+    height: 100vh;
+}
+
+.container {
+    height: 100%;
+    display: grid;
+    grid-template: 20% 20% 60% / 100%;
+    overflow: hidden;
+    
+    div{
+        overflow: hidden;
+    }
+}
+
+.border {
+    border: 1px solid red;
+}
