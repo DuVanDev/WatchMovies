@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import NavBar from '../molecules/navbar'
 import Slider from '../organisms/slider'
 import GroupMovies from '../molecules/GroupMovies'
 
@@ -20,7 +19,6 @@ function HomePage ( props ) {
 
     return (
         <div className="container border" >
-            {/* <NavBar /> */}
             <Slider movies={props.mostPopular} />
             <Slider movies={props.topRated} />
             <GroupMovies movies={props.nowPlay} />

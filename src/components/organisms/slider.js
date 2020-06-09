@@ -3,16 +3,24 @@ import React from 'react'
 // Import components
 import MovieCard from '../molecules/movieCard'
 
-function Slider ({movies}) {
+function Slider ( { movies } ) {
     return (
-        <div>
-            Slider Is THis
-            {
-                movies.map(
-                    item => 
-                    <MovieCard title={item.original_title} />
-                )
-            }
+        <div className='sliderSection'>
+            <h3>
+                Title
+            </h3>
+            <div className='banerCards'>
+                {
+                    movies.map(
+                        (item , i) =>
+                            
+                            <MovieCard title={item.original_title} />
+                    )
+                }
+            </div>
+            <div>
+                see More
+            </div>
         </div>
     )
 }
