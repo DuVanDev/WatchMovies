@@ -1,19 +1,30 @@
 
 #root {
     height: 100vh;
+    border: 1px solid red;
+    display: grid;
+    grid-template: auto 1fr  / 1fr ;
 }
 
 .container {
-    height: 100%;
-    display: grid;
-    grid-template: 20% 20% 60% / 100%;
-    overflow: hidden;
-    
-    div{
-        overflow: hidden;
-    }
 }
 
-.border {
-    border: 1px solid red;
+.banerCards {
+    display: grid;
+    grid-template-columns: repeat( 4 , 1fr);
+    grid-auto-rows: 15rem;
+    grid-gap: 1.5rem 1rem;
+    justify-content: space-between;
+}
+
+.sliderSection {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 2rem 2rem;
+}
+
+.gridMovies{
+    display: grid;
+    grid-template-columns: repeat(auto-fill , 10rem);
+    justify-content: center;
 }
