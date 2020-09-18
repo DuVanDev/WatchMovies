@@ -9,8 +9,12 @@ export default function GroupMovies ( { movies } ) {
             </div>
             <div className='gridMovies'>
                 {
-                    movies.map( item =>
-                        <MovieCard title={item.title} />
+                    movies.map( ( item, i ) =>
+                        <MovieCard
+                            key={i}
+                            title={item.title}
+                            urlImg={item.poster_path}
+                            />
                     )
                 }
             </div>

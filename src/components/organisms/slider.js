@@ -3,18 +3,22 @@ import React from 'react'
 // Import components
 import MovieCard from '../molecules/movieCard'
 
-function Slider ( { movies } ) {
+function Slider ( { movies, title } ) {
     return (
         <div className='sliderSection'>
             <h3>
-                Title
+                {title}
             </h3>
             <div className='banerCards'>
                 {
                     movies.map(
-                        (item , i) =>
-                            
-                            <MovieCard title={item.original_title} />
+                        ( item, i ) =>
+
+                            <MovieCard
+                                key={i}
+                                title={item.original_title}
+                                urlImg={item.poster_path}
+                            />
                     )
                 }
             </div>

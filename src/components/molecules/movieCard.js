@@ -1,11 +1,13 @@
 import React from 'react'
 
-function MovieCard ( { title } ) {
+function MovieCard ( { title, urlImg } ) {
     return (
         <div className="card">
-            <figure>
-
-            </figure>
+            <img
+                src={`https://image.tmdb.org/t/p/original${urlImg}`}
+                alt="Smiley face"
+                style={{ width: "100%" }}
+            />
             <div className="descriptionCard">
                 <div>
                     {title}

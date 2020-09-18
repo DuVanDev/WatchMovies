@@ -19,8 +19,8 @@ function HomePage ( props ) {
 
     return (
         <div className="container border" >
-            <Slider movies={props.mostPopular} />
-            <Slider movies={props.topRated} />
+            <Slider title="Most popular"  movies={props.mostPopular} />
+            <Slider title="Top rated" movies={props.topRated} />
             <GroupMovies movies={props.nowPlay} />
         </div>
     )
