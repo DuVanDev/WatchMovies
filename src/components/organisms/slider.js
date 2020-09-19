@@ -16,8 +16,9 @@ function Slider ( { movies, title } ) {
 
                             <MovieCard
                                 key={i}
-                                title={item.original_title}
+                                title={item.title}
                                 urlImg={item.poster_path}
+                                date={item.release_date}
                             />
                     )
                 }

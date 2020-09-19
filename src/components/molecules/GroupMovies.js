@@ -1,11 +1,13 @@
 import React from 'react'
 import MovieCard from './movieCard'
 
-export default function GroupMovies ( { movies } ) {
+export default function GroupMovies ( { movies, title } ) {
     return (
         <div className='groupMoviesSection' >
             <div>
-                Grup Movies
+                <h3>
+                    {title}
+                </h3>
             </div>
             <div className='gridMovies'>
                 {
@@ -14,7 +16,8 @@ export default function GroupMovies ( { movies } ) {
                             key={i}
                             title={item.title}
                             urlImg={item.poster_path}
-                            />
+                            date={item.release_date}
+                        />
                     )
                 }
             </div>
