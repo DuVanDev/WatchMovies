@@ -21,7 +21,7 @@ function HomePage ( props ) {
         <div className="container border" >
             <Slider title="Most popular"  movies={props.mostPopular} />
             <Slider title="Top rated" movies={props.topRated} />
-            <GroupMovies movies={props.nowPlay} />
+            <GroupMovies title="Trending" movies={props.nowPlay} />
         </div>
     )
 }
