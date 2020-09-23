@@ -7,7 +7,7 @@ import {
 const INITIAL_STATE = {
     mostPopular: [],
     topRated: [],
-    nowPlay: [],
+    nowPlay: { movies: [], page: 0 },
     loading: false,
     error: ""
 }
@@ -21,7 +21,7 @@ export default ( state = INITIAL_STATE, action ) => {
             return { ...state, topRated: action.payload, loading: false, error: "" }
             break;
         case GET_NOW_PLAY:
-            return { ...state, nowPlay: action.payload, loading: false, error: "" }
+            return { ...state, nowPlay: { movies: state.nowPlay.movies.concat( action.payload.data ), page: action.payload.page }, loading: false, error: "" }
             break;
         default:
             return state

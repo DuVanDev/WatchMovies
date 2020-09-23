@@ -29,12 +29,12 @@ export const getTopRated = () => async ( dispatch ) => {
     }
 }
 
-export const getNowPlay = () => async ( dispatch ) => {
+export const getNowPlay = (page) => async ( dispatch , getState ) => {
     try {
-        let response = await axios.get( 'https://api.themoviedb.org/3/movie/now_playing?api_key=60889b7651155b4154c658214027b4e2&language=en-US&page=1' )
+        let response = await axios.get( `https://api.themoviedb.org/3/movie/now_playing?api_key=60889b7651155b4154c658214027b4e2&language=en-US&page=${page + 1}` )
         dispatch( {
             type: GET_NOW_PLAY,
-            payload: response.data.results
+            payload: { data: response.data.results , page : page + 1 }
         } )
     } catch ( error ) {
         console.log( `The error is ${error.message}` );

@@ -13,15 +13,20 @@ function HomePage ( props ) {
     useEffect( () => {
         props.getMostPopularMovies()
         props.getTopRated()
-        props.getNowPlay()
+        props.getNowPlay(props.nowPlay.page)
 
     }, [] )
 
     return (
         <div className="container border" >
-            <Slider title="Most popular"  movies={props.mostPopular} />
+            <Slider title="Most popular" movies={props.mostPopular} />
             <Slider title="Top rated" movies={props.topRated} />
-            <GroupMovies title="Trending" movies={props.nowPlay} />
+            <GroupMovies
+                title="Trending"
+                movies={props.nowPlay.movies}
+                getMoreMovies={props.getNowPlay}
+                page={props.nowPlay.page}
+            />
         </div>
     )
 }
