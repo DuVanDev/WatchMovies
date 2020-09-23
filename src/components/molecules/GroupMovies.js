@@ -14,6 +14,7 @@ export default function GroupMovies ( { movies, title } ) {
                     movies.map( ( item, i ) =>
                         <MovieCard
                             key={i}
+                            id={item.id}
                             title={item.title}
                             urlImg={item.poster_path}
                             date={item.release_date}
