@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 // Import components
 import MovieCard from '../molecules/movieCard'
@@ -16,6 +17,7 @@ function Slider ( { movies, title } ) {
 
                             <MovieCard
                                 key={i}
+                                id={item.id}
                                 title={item.title}
                                 urlImg={item.poster_path}
                                 date={item.release_date}
@@ -23,9 +25,9 @@ function Slider ( { movies, title } ) {
                     )
                 }
             </div>
-            <div>
-                see More
-            </div>
+            <Link to={"#"} type="button" className="see-more-btn">
+                See More
+            </Link>
         </div>
     )
 }
