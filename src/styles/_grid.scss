@@ -1,9 +1,13 @@
 
 #root {
     height: 100vh;
-    border: 1px solid red;
+    // border: 1px solid red;
     display: grid;
     grid-template: auto 1fr  / 1fr ;
+}
+
+body {
+    background-color: $dark;
 }
 
 .container {
@@ -23,18 +27,75 @@
 .sliderSection {
     display: grid;
     grid-template-rows: auto 1fr auto;
-    margin: 1rem 2rem;
+    margin: 0 2rem;
+
+    h3{
+        color: $withe;
+    }
 }
 
 .gridMovies{
     display: grid;
     grid-template-columns: repeat(auto-fill , 10rem);
-    grid-gap:1rem;
-    justify-content: space-around;
+    grid-gap:1rem 0;
+    justify-content: space-between;
 }
 
 .groupMoviesSection{
     display: grid;
     grid-template-rows: auto auto;
     margin: 2rem 2rem;
+    
+    h3{
+        color: $withe;
+    }
 }
+
+.section-detail-movie {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    align-items: center;
+    color: white;
+    background-image: linear-gradient(to right, rgba(17.25%, 16.47%, 20.78%, 1.00) 150px, rgba(25.49%, 25.10%, 25.88%, 0.84) 100%);
+}
+
+.backdrop-movie {
+    background-size: cover;
+    background-repeat: no-repeat ;
+}
+
+.section-navbar {
+    background-color: $primary;
+    padding: .7rem;
+    h2{
+        font-weight: normal;
+        color: $withe;
+        margin: 0px;
+    }
+
+    .gradient-text {
+        // color: $dark
+        font-weight: 700;
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: .3rem;
+    height: .3rem;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px $gray; 
+    border-radius: 1rem;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: $gradient; 
+    border-radius: 10px;
+  }
