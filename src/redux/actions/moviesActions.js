@@ -1,58 +1,84 @@
 
-import { GET_MOST_POPULAR_MOVIES, GET_TOP_RATED, GET_NOW_PLAY } from '../types/moviesTypes'
+import { GET_MOST_POPULAR_MOVIES, GET_TOP_RATED, GET_NOW_PLAY, ERROR_GET, CHANGE_STATE, API } from '../types/moviesTypes'
 import { ERROR, GET_DETAIL_DATA_MOVIE, IDLE, LOADING, SUCCESS, GET_USER_ID } from '../types/detailMoviesTypes'
 
 import axios from 'axios'
 
-export const getMostPopularMovies = () => async ( dispatch ) => {
+const API_KEY = "60889b7651155b4154c658214027b4e2"
 
-    try {
-        let response = await axios.get( 'https://api.themoviedb.org/3/movie/popular?api_key=60889b7651155b4154c658214027b4e2&language=en-US&page=1' )
-        dispatch( {
-            type: GET_MOST_POPULAR_MOVIES,
-            payload: response.data.results
-        } )
-    } catch ( error ) {
-        console.log( `THe erro is ${error.message}` );
-    }
+const mostPopularSuccess = ( page ) => ( response ) => { return { type: GET_MOST_POPULAR_MOVIES, payload: { data: response.results, page: page } } }
+
+export const getMostPopularMovies = ( page ) => {
+    let numberPage = page + 1
+    return apiAction( {
+        url: "https://api.themoviedb.org/3/movie/popular",
+        data: {
+            api_key: API_KEY,
+            language: "en",
+            page: numberPage
+        },
+        onSuccess: mostPopularSuccess( numberPage ),
+        onFailure: () => console.log( "Error Papu" ),
+    } )
 }
 
-export const getTopRated = () => async ( dispatch ) => {
-    try {
-        let response = await axios.get( 'https://api.themoviedb.org/3/movie/top_rated?api_key=60889b7651155b4154c658214027b4e2&language=en-US&page=1' )
-        dispatch( {
-            type: GET_TOP_RATED,
-            payload: response.data.results
-        } )
-    } catch ( error ) {
-        console.log( `The error is ${error.message}` );
-    }
+const topRatedSuccess = ( page ) => ( response ) => { return { type: GET_TOP_RATED, payload: { data: response.results, page: page } } }
+
+export const getTopRated = ( page ) => {
+    let numberPage = page + 1
+    return apiAction( {
+        url: "https://api.themoviedb.org/3/movie/top_rated",
+        data: {
+            api_key: API_KEY,
+            language: "en",
+            page: numberPage
+        },
+        onSuccess: topRatedSuccess( numberPage ),
+        onFailure: () => console.log( "Error Papu" ),
+    } )
 }
 
-export const getNowPlay = (page) => async ( dispatch , getState ) => {
-    try {
-        let response = await axios.get( `https://api.themoviedb.org/3/movie/now_playing?api_key=60889b7651155b4154c658214027b4e2&language=en-US&page=${page + 1}` )
-        dispatch( {
-            type: GET_NOW_PLAY,
-            payload: { data: response.data.results , page : page + 1 }
-        } )
-    } catch ( error ) {
-        console.log( `The error is ${error.message}` );
-    }
+const nowPlaySuccess = ( page ) => ( response ) => { return { type: GET_NOW_PLAY, payload: { data: response.results, page: page } } }
+
+export const getNowPlay = ( page ) => {
+    let numberPage = page + 1
+    return apiAction( {
+        url: "https://api.themoviedb.org/3/movie/now_playing",
+        data: {
+            api_key: API_KEY,
+            language: "en",
+            page: numberPage
+        },
+        onSuccess: nowPlaySuccess( numberPage ),
+        onFailure: () => console.log( "Error Papu" )
+    } )
 }
 
-export const getDataMovie = ( id ) => ( dispatch ) => {
+const dataMovieSuccess = ( response ) => {
+    console.log( "dataMovieSuccess -> response", response )
+    return { type: GET_DETAIL_DATA_MOVIE, payload: response }
+}
 
-    axios.get( `https://api.themoviedb.org/3/movie/${id}?api_key=60889b7651155b4154c658214027b4e2&language=en-US` )
-        .then(
-            response =>
-                dispatch(
-                    {
-                        type: GET_DETAIL_DATA_MOVIE,
-                        payload: response.data
-                    }
-                )
-        ).catch( error => console.log( `The error is ${error.message}` ) )
+export const getDataMovie = ( id ) => {
+    return apiAction( {
+        url: `https://api.themoviedb.org/3/movie/${id}`,
+        data: {
+            api_key: API_KEY,
+            language: "en-US"
+        },
+        onSuccess: dataMovieSuccess,
+        onFailure: () => console.log( "Error Papu" )
+    } )
+    // axios.get( `https://api.themoviedb.org/3/movie/${id}?api_key=60889b7651155b4154c658214027b4e2&language=en-US` )
+    //     .then(
+    //         response =>
+    //             dispatch(
+    //                 {
+    //                     type: GET_DETAIL_DATA_MOVIE,
+    //                     payload: response.data
+    //                 }
+    //             )
+    //     ).catch( error => console.log( `The error is ${error.message}` ) )
 }
 
 export const getAuthGuestSession = () => ( dispatch ) => {
@@ -62,7 +88,7 @@ export const getAuthGuestSession = () => ( dispatch ) => {
         )
 }
 
-export const postAxios = ( id ,  value ,guest_session_id ) => ( dispatch ) => {
+export const postAxios = ( id, value, guest_session_id ) => ( dispatch ) => {
 
     dispatch( {
         type: LOADING,
@@ -81,4 +107,29 @@ export const postAxios = ( id ,  value ,guest_session_id ) => ( dispatch ) => {
             } )
         )
 }
+
+const apiAction = ( {
+    url = "",
+    method = "GET",
+    data = null,
+    onSuccess = () => { },
+    onFailure = () => { },
+    label = ""
+} ) => {
+    return {
+        type: API,
+        payload: {
+            url,
+            method,
+            data,
+            onSuccess,
+            onFailure,
+            label
+        }
+    }
+}
+
+
+
+
 

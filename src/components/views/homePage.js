@@ -11,16 +11,22 @@ function HomePage ( props ) {
 
 
     useEffect( () => {
-        props.getMostPopularMovies()
-        props.getTopRated()
-        props.getNowPlay(props.nowPlay.page)
+        props.getMostPopularMovies( props.mostPopular.movies )
+        props.getTopRated( props.topRated.page )
+        props.getNowPlay( props.nowPlay.page )
 
     }, [] )
 
     return (
         <div className="container border" >
-            <Slider title="Most popular" movies={props.mostPopular} />
-            <Slider title="Top rated" movies={props.topRated} />
+            <Slider
+                title="Most popular"
+                movies={props.mostPopular.movies}
+            />
+            <Slider
+                title="Top rated"
+                movies={props.topRated.movies}
+            />
             <GroupMovies
                 title="Trending"
                 movies={props.nowPlay.movies}
