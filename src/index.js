@@ -13,10 +13,13 @@ import reduxThunk from 'redux-thunk'
 // Import Router
 import { BrowserRouter } from 'react-router-dom';
 
+/* Import Middleware */
+import  apiMiddleware from './middleware/api'
+
 const store = createStore(
   reducers,
   {},
-  applyMiddleware( reduxThunk )
+  applyMiddleware( reduxThunk , apiMiddleware )
 )
 
 ReactDOM.render(
