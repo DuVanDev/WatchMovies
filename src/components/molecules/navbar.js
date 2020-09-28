@@ -1,14 +1,17 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function NavBar () {
     return (
         <section className="section-navbar">
-            <h2>
-                watch
+            <Link to="/">
+                <h2>
+                    watch
                 <span className="gradient-text">
-                    MOVIE
+                        MOVIE
                 </span>
-            </h2>
+                </h2>
+            </Link>
         </section>
     )
 }
