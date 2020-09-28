@@ -1,8 +1,7 @@
 
 import { GET_MOST_POPULAR_MOVIES, GET_TOP_RATED, GET_NOW_PLAY, ERROR_GET, CHANGE_STATE, API } from '../types/moviesTypes'
-import { ERROR, GET_DETAIL_DATA_MOVIE, IDLE, LOADING, SUCCESS, GET_USER_ID } from '../types/detailMoviesTypes'
+import { ERROR, GET_DETAIL_DATA_MOVIE, GET_USER_ID, CHANGE_STATE_DETAIL_MOVIES } from '../types/detailMoviesTypes'
 
-import axios from 'axios'
 
 const API_KEY = "60889b7651155b4154c658214027b4e2"
 
@@ -40,22 +39,29 @@ export const getTopRated = ( page ) => {
 
 const nowPlaySuccess = ( page ) => ( response ) => { return { type: GET_NOW_PLAY, payload: { data: response.results, page: page } } }
 
-export const getNowPlay = ( page ) => {
-    let numberPage = page + 1
-    return apiAction( {
-        url: "https://api.themoviedb.org/3/movie/now_playing",
-        data: {
-            api_key: API_KEY,
-            language: "en",
-            page: numberPage
-        },
-        onSuccess: nowPlaySuccess( numberPage ),
-        onFailure: () => console.log( "Error Papu" )
-    } )
+export const getNowPlay = () => {
+
+    return ( dispathc, getState ) => {
+
+        console.log( "getNowPlay -> getState()", getState() )
+
+        dispathc(
+            apiAction( {
+                url: "https://api.themoviedb.org/3/movie/now_playing",
+                data: {
+                    api_key: API_KEY,
+                    language: "en",
+                    page: getState().moviesReducers.nowPlay.page + 1
+                },
+                onSuccess: nowPlaySuccess( getState().moviesReducers.nowPlay.page + 1 ),
+                onFailure: () => console.log( "Error Papu" )
+            } )
+        )
+
+    }
 }
 
 const dataMovieSuccess = ( response ) => {
-    console.log( "dataMovieSuccess -> response", response )
     return { type: GET_DETAIL_DATA_MOVIE, payload: response }
 }
 
@@ -69,51 +75,67 @@ export const getDataMovie = ( id ) => {
         onSuccess: dataMovieSuccess,
         onFailure: () => console.log( "Error Papu" )
     } )
-    // axios.get( `https://api.themoviedb.org/3/movie/${id}?api_key=60889b7651155b4154c658214027b4e2&language=en-US` )
-    //     .then(
-    //         response =>
-    //             dispatch(
-    //                 {
-    //                     type: GET_DETAIL_DATA_MOVIE,
-    //                     payload: response.data
-    //                 }
-    //             )
-    //     ).catch( error => console.log( `The error is ${error.message}` ) )
 }
 
-export const getAuthGuestSession = () => ( dispatch ) => {
-    axios.get( `https://api.themoviedb.org/3/authentication/guest_session/new?api_key=60889b7651155b4154c658214027b4e2` )
-        .then(
-            response => dispatch( { type: GET_USER_ID, payload: response.data } )
-        )
+const getUserId = ( response ) => {
+    console.log( "getUserId -> response", response )
+    return { type: GET_USER_ID, payload: response }
 }
 
-export const postAxios = ( id, value, guest_session_id ) => ( dispatch ) => {
+export const getAuthGuestSession = () => {
 
-    dispatch( {
-        type: LOADING,
-        payload: ""
+    return apiAction( {
+        url: "https://api.themoviedb.org/3/authentication/guest_session/new",
+        data: {
+            api_key: API_KEY
+        },
+        onSuccess: getUserId,
+        onFailure: () => { console.log( "BADDD API" ) }
     } )
-    let object = { value: value }
-    axios.post( `https://api.themoviedb.org/3/movie/${id}/rating?api_key=60889b7651155b4154c658214027b4e2&guest_session_id=${guest_session_id}`, object )
-        .then(
-            response =>
-                dispatch( { type: SUCCESS, payload: response.data } )
-        )
-        .catch( error =>
-            dispatch( {
-                type: ERROR,
-                payload: error
-            } )
-        )
 }
+
+
+
+
+export const setRateMovie = ( id, value, userId ) => {
+
+    const loading = () => { return { type: CHANGE_STATE_DETAIL_MOVIES, payload: { stateRateMovie: { state: "loading", error: null } } } }
+    const error = ( error ) => { return { type: CHANGE_STATE_DETAIL_MOVIES, payload: { stateRateMovie: { state: "error", error: error } } } }
+    const success = () => { return { type: CHANGE_STATE_DETAIL_MOVIES, payload: { stateRateMovie: { state: "success", error: null } } } }
+    const final = () => { return { type: CHANGE_STATE_DETAIL_MOVIES, payload: { stateRateMovie: { state: "idle", error: null } } } }
+
+    return apiAction( {
+        url: `https://api.themoviedb.org/3/movie/${id}/rating?api_key=${API_KEY}&guest_session_id=${userId}`,
+        method: "POST",
+        data: {
+            value: value
+        },
+        onLoading: loading,
+        onSuccess: success,
+        onFailure: error,
+        final: final
+    } )
+}
+
+export const rateMovie = ( id, value ) => {
+    return ( dispatch, getState ) => {
+        dispatch( getAuthGuestSession() )
+            .then( () => {
+                dispatch( setRateMovie( id, value, getState().detailMovieReducer.guest_session_id ) )
+            } )
+    }
+}
+
+
 
 const apiAction = ( {
     url = "",
     method = "GET",
     data = null,
+    onLoading = () => { },
     onSuccess = () => { },
     onFailure = () => { },
+    final = () => { },
     label = ""
 } ) => {
     return {
@@ -122,8 +144,10 @@ const apiAction = ( {
             url,
             method,
             data,
+            onLoading,
             onSuccess,
             onFailure,
+            final,
             label
         }
     }

@@ -2,23 +2,23 @@ import React, { useState } from 'react'
 
 import { ReactComponent as Icon } from '../../icons/star.svg'
 
-function StarRating () {
-    const [ratinValue, setRatinValue] = useState( null )
+function StarRating ( { value ,setValueRate } ) {
+
     return (
         <div>
             {
                 [...Array( 5 )].map(
                     ( star, i ) => {
-                        let value = ( i + 1 ) * 2
+                        let indexValue = ( i + 1 ) * 2
 
                         return <label>
                             <input
                                 type="radio"
                                 name="rating"
-                                value={value}
-                                onClick={() => setRatinValue( value )}
+                                value={indexValue}
+                                onClick={() => setValueRate( indexValue )}
                             />
-                            <Icon />
+                            <Icon className={`star ${ indexValue <= value && 'yellow' }`}  />
                         </label>
                     }
                 )

@@ -8,7 +8,6 @@ const apiMiddleware = ( { dispatch } ) => next => action => {
     if ( !action ) return;
 
     next( action )
-    console.log("action", action)
 
     if ( action.type !== API ) return;
 
@@ -18,8 +17,10 @@ const apiMiddleware = ( { dispatch } ) => next => action => {
         method,
         data,
         // accessToken,
+        onLoading,
         onSuccess,
         onFailure,
+        final,
         label,
         headers
     } = action.payload
@@ -31,12 +32,13 @@ const apiMiddleware = ( { dispatch } ) => next => action => {
     axios.defaults.headers.common["Content-Type"] = "application/json"
 
 
-    if ( label ) {
-        console.log( 'Existe Label' )
-    }
+    // if ( label ) {
+    //     console.log( 'Existe Label' )
+    // }
 
+    dispatch(onLoading())
 
-    axios.request( {
+    return axios.request( {
         bareURL: "https://api.themoviedb.org/3",
         url,
         method,
@@ -44,13 +46,16 @@ const apiMiddleware = ( { dispatch } ) => next => action => {
         [dataOrParams]: data
     } ).then(
         response => {
-            // console.log( "response", response )
+            console.log( "response", response.data )
             dispatch( onSuccess( response.data ) )
         }
     ).catch(
         error => {
             dispatch( onFailure( error ) )
         } )
+        .finally(
+            dispatch(final())
+        )
 
 
 }

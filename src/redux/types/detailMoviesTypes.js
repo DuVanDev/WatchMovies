@@ -3,8 +3,6 @@ export const GET_DETAIL_DATA_MOVIE = "GET_DETAIL_DATA_MOVIE"
 
 export const GET_USER_ID = "GET_USER_ID"
 
-export const LOADING = "LOADING"
-export const ERROR = "ERROR"
-export const SUCCESS = "SUCCESS"
-export const IDLE = "IDLE"
+export const CHANGE_STATE_DETAIL_MOVIES = "CHANGE_STATE_DETAIL_MOVIES"
+export const ERROR_DETAIL_MOVIES = "ERROR_DETAIL_MOVIES"
 

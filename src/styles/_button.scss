@@ -4,6 +4,7 @@
     background: $color;
     color: $color_text;
     margin: 1rem 0px;
+    border: none;
 }
 
 .see-more-btn {
@@ -15,4 +16,28 @@
     &:hover {
         @include button($primary , $withe );
     }
+}
+.rate-movie-btn {
+    @include button($gradient , $withe );
+    // -webkit-background-clip: text;
+    // -webkit-text-fill-color: transparent;
+
+    &:hover {
+        @include button($primary , $withe );
+    }
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+.star{
+    cursor: pointer;
+    transition: color 200ms;
+    margin: 0 .3rem;
+    fill: gray;
+    &.yellow {
+        fill: yellow;
+    }
+
 }
