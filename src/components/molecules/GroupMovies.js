@@ -11,23 +11,24 @@ export default function GroupMovies ( { movies, getMoreMovies, title, page } ) {
 
         const observe = new IntersectionObserver( handleObserver, {
             root: null,
-            rootMargin: "20px",
+            rootMargin: "0px",
             threshold: 1.0
         } )
 
+        console.log( "GroupMovies -> movies", movies )
         if ( loader.current ) {
-            console.log( "GroupMovies -> loader.current", loader.current )
             observe.observe( loader.current )
+            console.log( "GroupMovies -> loader.current", loader.current )
         }
-    }, [movies] )
+    }, [] )
 
     const handleObserver = ( entities ) => {
-        if ( entities[0].isIntersecting && movies.length ) {
-            getMoreMovies( page );
+        if ( entities[0].isIntersecting ) {
+            console.log( "Page is " );
+            getMoreMovies();
         }
 
     }
-
 
     return (
         <div className='groupMoviesSection' >

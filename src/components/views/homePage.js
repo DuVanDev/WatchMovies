@@ -13,7 +13,7 @@ function HomePage ( props ) {
     useEffect( () => {
         props.getMostPopularMovies( props.mostPopular.movies )
         props.getTopRated( props.topRated.page )
-        props.getNowPlay( props.nowPlay.page )
+        // props.getNowPlay( props.nowPlay.page )
 
     }, [] )
 
