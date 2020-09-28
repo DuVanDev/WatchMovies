@@ -5,16 +5,19 @@ import { useParams } from 'react-router-dom';
 
 /* Import Redux */
 import { connect } from 'react-redux'
-import { getDataMovie, postAxios, getAuthGuestSession } from '../../redux/actions/moviesActions'
+import { getDataMovie, setRateMovie, getAuthGuestSession, rateMovie } from '../../redux/actions/moviesActions'
 import StarRating from '../molecules/StarRating';
 
+import Spiner from '../atoms/Spiner'
 
-function DetailMovie ( { getDataMovie, postAxios, getAuthGuestSession, title, overview, genres, runtime, vote_average, release_date, poster_path, backdrop_path, state, guest_session_id } ) {
+
+function DetailMovie ( { getDataMovie, stateRateMovie, rateMovie, title, overview, genres, runtime, vote_average, release_date, poster_path, backdrop_path, state, guest_session_id } ) {
 
     const { id } = useParams()
+    const [valueRate, setValueRate] = useState( null )
+
 
     useEffect( () => {
-        getAuthGuestSession()
         getDataMovie( id )
     }, [id] )
 
@@ -67,15 +70,24 @@ function DetailMovie ( { getDataMovie, postAxios, getAuthGuestSession, title, ov
                     </div>
                 </section>
             </div>
-            <button onClick={() => postAxios( id, 2, guest_session_id )} >
-                Post Active
-            </button>
-            <div>
-                <h4>
+            <section className="section-ratemovie" >
+                <h3>
                     Rating Movie
-                </h4>
-                <StarRating/>
-            </div>
+                </h3>
+                <StarRating value={valueRate} setValueRate={setValueRate} />
+                {
+                    stateRateMovie.state == "loading" ?
+                        <Spiner />
+                        :
+                        <button
+                            disabled={valueRate ? false : true}
+                            onClick={() => rateMovie( id, valueRate )}
+                            className="rate-movie-btn"
+                        >
+                            Rate Movie
+                        </button>
+                }
+            </section>
         </div>
     )
 }
@@ -89,9 +101,10 @@ const mapStateToProps = ( { detailMovieReducer } ) => {
 }
 
 const mapDispatchToProps = {
-    postAxios,
+    setRateMovie,
     getDataMovie,
-    getAuthGuestSession
+    getAuthGuestSession,
+    rateMovie
 }
 
 
